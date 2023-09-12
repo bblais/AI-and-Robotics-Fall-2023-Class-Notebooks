@@ -127,7 +127,7 @@ for i in range(10):
     step()
 
 
-# In[29]:
+# In[38]:
 
 
 def step(length=50):
@@ -146,6 +146,20 @@ for i in range(10):
 
 for i in range(10):
     step(60)
+
+
+# In[33]:
+
+
+reset(figsize=(3,3))
+step(20)   # length=20
+
+
+# In[37]:
+
+
+reset(figsize=(3,3))
+step(60)   # length=60
 
 
 # In[ ]:
