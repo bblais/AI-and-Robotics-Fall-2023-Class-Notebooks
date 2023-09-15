@@ -17,7 +17,7 @@ from Game import *
 # - what constitutes a win/lose/stalemate?   state==0 ==> lose,  state==1 ==> win
 # 
 
-# In[2]:
+# In[3]:
 
 
 def initial_state(): 
@@ -25,13 +25,13 @@ def initial_state():
     return 21
 
 
-# In[3]:
+# In[4]:
 
 
 initial_state()
 
 
-# In[4]:
+# In[5]:
 
 
 def valid_moves(state,player):
@@ -45,25 +45,25 @@ def valid_moves(state,player):
         return [1,2,3]
 
 
-# In[5]:
+# In[6]:
 
 
 valid_moves(17,1)
 
 
-# In[6]:
+# In[7]:
 
 
 valid_moves(2,1)
 
 
-# In[7]:
+# In[8]:
 
 
 valid_moves(1,1)
 
 
-# In[8]:
+# In[9]:
 
 
 def show_state(state):
@@ -71,13 +71,13 @@ def show_state(state):
     print("There are",state,"sticks.")
 
 
-# In[9]:
+# In[10]:
 
 
 show_state(17)
 
 
-# In[10]:
+# In[11]:
 
 
 def update_state(state,player,move):
@@ -88,25 +88,25 @@ def update_state(state,player,move):
     return new_state
 
 
-# In[11]:
+# In[12]:
 
 
 update_state(17,2,3)
 
 
-# In[12]:
+# In[13]:
 
 
 update_state(17,2,5)
 
 
-# In[13]:
+# In[14]:
 
 
 update_state(3,2,5)
 
 
-# In[14]:
+# In[15]:
 
 
 def win_status(state,player):
@@ -127,7 +127,7 @@ def win_status(state,player):
     
 
 
-# In[15]:
+# In[16]:
 
 
 def random_move(state,player):    
@@ -150,13 +150,13 @@ def human_move(state,player):
     return move
 
 
-# In[16]:
+# In[17]:
 
 
 human_move(2,1)
 
 
-# In[17]:
+# In[18]:
 
 
 random_move(17,1)
@@ -198,7 +198,7 @@ random_move(17,1)
 
 
 
-# In[18]:
+# In[19]:
 
 
 human_agent=Agent(human_move)
