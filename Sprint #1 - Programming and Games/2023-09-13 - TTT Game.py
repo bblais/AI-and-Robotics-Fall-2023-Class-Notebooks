@@ -274,7 +274,7 @@ show_state(state)
 win_status(state,1)
 
 
-# In[24]:
+# In[26]:
 
 
 def random_move(state,player):    
