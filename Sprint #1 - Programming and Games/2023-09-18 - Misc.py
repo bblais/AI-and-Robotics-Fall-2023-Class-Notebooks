@@ -7,6 +7,8 @@
 from Game import *
 
 
+# ## Debug Dodgem
+
 # In[3]:
 
 
@@ -26,7 +28,7 @@ state
 state.show_locations()
 
 
-# In[ ]:
+# In[25]:
 
 
 def valid_moves(state,player):
@@ -47,17 +49,21 @@ def valid_moves(state,player):
     return moves
 
 
-# In[ ]:
+# In[26]:
 
 
+state=Board(3,3)
+state[1]=state[3]=1
+state
 
 
-
-# In[ ]:
-
+# In[27]:
 
 
+valid_moves(state,1)
 
+
+# ## Debug Goblet
 
 # In[8]:
 
@@ -104,6 +110,14 @@ for c in range(4):
        s+=1
 
 
+# In[ ]:
+
+
+
+
+
+# ## Debug 3d ttt
+
 # In[16]:
 
 
@@ -140,6 +154,89 @@ def win_status(state,player):
     # check diagonals
 
     # check stalemate
+
+
+# ## debug connect-3 and connect 4
+
+# In[21]:
+
+
+state=Board(4,5)
+for i in range(20):
+    state[i]=random.choice([0,1,2])
+state
+
+
+# In[22]:
+
+
+state.show_locations()
+
+
+# In[ ]:
+
+
+for loc in [0,1,2,3,4,5,6,7,8,9]:
+    if state[loc]==player and state[loc+5]==player and state[loc+10]==player:
+        return 'win'
+
+
+# ## debug breakthrough
+
+# In[37]:
+
+
+state=Board(5,5)
+for i in range(25):
+    state[i]=random.choice([0,1,2])
+player=1
+if player==1:
+    other_player=2
+else:
+    other_player=1
+    
+state
+
+
+# In[42]:
+
+
+state[15]=1
+state[19]=2
+
+
+# In[43]:
+
+
+state
+
+
+# In[31]:
+
+
+state.show_locations()
+
+
+# In[49]:
+
+
+moves=[]
+
+for location in range(20):
+    if state[location]==player and state[location+5]==0:
+        moves.append([location,location+5])
+
+    if location not in [0,5,10,15,20] and state[location]==player and state[location+4]==other_player:
+        moves.append([location,location+5])
+
+    # if state[location]==player and state[location+4]==other_player:
+    #     moves.append([location,location+4])
+
+
+# In[50]:
+
+
+moves
 
 
 # In[ ]:
