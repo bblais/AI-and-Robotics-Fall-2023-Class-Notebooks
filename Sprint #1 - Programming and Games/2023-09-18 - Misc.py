@@ -7,7 +7,7 @@
 from Game import *
 
 
-# ## Debug Dodgem
+# ## Debug Dodgem and fox and hounds
 
 # In[3]:
 
@@ -63,7 +63,106 @@ state
 valid_moves(state,1)
 
 
+# In[60]:
+
+
+state=Board(8,8)
+for i in range(64):
+    state[i]=random.choice([0,0,0,1,2])
+
+state[1]=1
+state[5]=1
+
+state
+
+
+# In[57]:
+
+
+state.show_locations()
+
+
+# In[58]:
+
+
+def valid_moves(state,player):
+
+    moves=[]
+
+    if player==1:
+        for start in [1,3,5,7]:
+            if state[start]==1 and state[start+7]==0:
+                moves.append( [start,start+7] )
+
+        
+
+    elif player==2:
+        pass # fill this in
+
+
+    return moves
+
+
+# In[61]:
+
+
+valid_moves(state,1)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ## Debug Goblet
+
+# In[51]:
+
+
+def initial_state():
+
+    main=Board(4,4,4)
+    pile=Board(2,3)
+    move_count=0
+
+    state=main,pile,move_count
+
+    return state
+    
+
+
+# In[52]:
+
+
+state=initial_state()
+main,pile,move_count=state
+
+
+# In[55]:
+
+
+state=Board(3,3,3)
+state.rc_from_index(20)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
 
 # In[8]:
 
