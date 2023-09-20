@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 from Game import *
@@ -10,7 +10,7 @@ from Game.minimax import *
 
 # ## Nim
 
-# In[3]:
+# In[2]:
 
 
 def initial_state(): 
@@ -59,7 +59,7 @@ def win_status(state,player):
 
 # ## Agents
 
-# In[5]:
+# In[3]:
 
 
 def random_move(state,player):    
@@ -84,7 +84,7 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
-# In[6]:
+# In[4]:
 
 
 state=initial_state()
@@ -92,7 +92,7 @@ values,moves=minimax_values(state,1)
 values,moves
 
 
-# In[7]:
+# In[5]:
 
 
 state=20
@@ -100,7 +100,7 @@ values,moves=minimax_values(state,1)
 values,moves
 
 
-# In[1]:
+# In[6]:
 
 
 def minimax_move(state,player):
@@ -112,11 +112,11 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
-# In[4]:
+# In[7]:
 
 
 g=Game(number_of_games=1)
-g.run(human_agent,random_agent)
+g.run(minimax_agent,random_agent)
 g.report()  
 
 

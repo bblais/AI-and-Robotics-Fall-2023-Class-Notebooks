@@ -105,7 +105,7 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
-# In[6]:
+# In[4]:
 
 
 state=initial_state()
@@ -125,7 +125,7 @@ values,moves=minimax_values(state,1)
 values,moves
 
 
-# In[ ]:
+# In[8]:
 
 
 def minimax_move(state,player):
@@ -137,11 +137,11 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
-# In[4]:
+# In[10]:
 
 
 g=Game(number_of_games=1)
-g.run(human_agent,random_agent)
+g.run(minimax_agent,random_agent)
 g.report()   
 
 
