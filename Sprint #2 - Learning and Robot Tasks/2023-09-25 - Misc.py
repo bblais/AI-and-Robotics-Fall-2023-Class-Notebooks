@@ -97,6 +97,44 @@ state
 number_of_pieces(state,2)
 
 
+# In[13]:
+
+
+player=2
+
+
+# In[ ]:
+
+
+if player==2:
+    value=(number_of_pieces(state,2)-number_of_pieces(state,1))/(number_of_pieces(state,2)+number_of_pieces(state,1))
+
+
+# In[16]:
+
+
+state
+
+
+# In[14]:
+
+
+player=2
+
+if player==1:
+    other_player=2
+else:
+    other_player=1
+
+value=(number_of_pieces(state,player)-number_of_pieces(state,other_player))/(number_of_pieces(state,player)+number_of_pieces(state,other_player))
+
+
+# In[15]:
+
+
+value
+
+
 # In[ ]:
 
 
