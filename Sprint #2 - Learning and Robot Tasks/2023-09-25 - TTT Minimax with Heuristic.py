@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[5]:
 
 
 from Game import *
@@ -10,7 +10,7 @@ from Game.minimax import *
 
 # ## TTT
 
-# In[2]:
+# In[6]:
 
 
 def initial_state(): 
@@ -81,7 +81,7 @@ def win_status(state,player):
 
 # ## Agents
 
-# In[3]:
+# In[7]:
 
 
 def random_move(state,player):    
@@ -105,7 +105,7 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
-# In[4]:
+# In[8]:
 
 
 state=initial_state()
@@ -114,7 +114,7 @@ values,moves=minimax_values(state,1)
 values,moves
 
 
-# In[5]:
+# In[9]:
 
 
 state=initial_state()
@@ -125,19 +125,19 @@ values,moves=minimax_values(state,1)
 values,moves
 
 
-# In[8]:
+# In[13]:
 
 
 def minimax_move(state,player):
 
-    values,moves=minimax_values(state,player,max_depth=5)
+    values,moves=minimax_values(state,player,maxdepth=5)
     return top_choice(moves,values)
 
 
 minimax_agent=Agent(minimax_move)
 
 
-# In[ ]:
+# In[14]:
 
 
 def heuristic(state,player):
@@ -145,11 +145,35 @@ def heuristic(state,player):
     return value  # between -1 and 1 represents the value of the state    
 
 
-# In[10]:
+# In[15]:
 
 
 g=Game(number_of_games=1)
 g.run(minimax_agent,random_agent)
+g.report()   
+
+
+# In[ ]:
+
+
+
+
+
+# In[16]:
+
+
+g=Game(number_of_games=1)
+g.display=False
+g.run(minimax_agent,random_agent)
+g.report()   
+
+
+# In[20]:
+
+
+g=Game(number_of_games=100)
+g.display=False
+g.run(random_agent,random_agent)
 g.report()   
 
 
