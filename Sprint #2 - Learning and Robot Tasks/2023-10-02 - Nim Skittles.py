@@ -95,6 +95,12 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
+# In[ ]:
+
+
+
+
+
 # In[5]:
 
 
@@ -103,6 +109,11 @@ def skittles_move(state,player,info):
     last_state=info.last_state
     last_action=info.last_action
 
+    original_state=state
+    state=adjusted_state(original_state)
+    original_last_state=last_state
+    last_state=adjusted_state(original_last_state)
+    
     # make/adjust the table
 
     if state not in S:
@@ -168,7 +179,7 @@ perfect_agent=Agent(perfect_move)
 
 
 
-# In[11]:
+# In[12]:
 
 
 g=Game(number_of_games=100)
@@ -177,10 +188,58 @@ g.run(perfect_agent,skittles_agent)
 g.report()  
 
 
-# In[10]:
+# In[9]:
 
 
 SaveTable(skittles_agent.S,'nim skittles.json')
+
+
+# In[26]:
+
+
+from tqdm import tqdm
+
+
+# In[28]:
+
+
+player_one_win_percentage=[]
+player_two_win_percentage=[]
+tie_percentage=[]
+number_of_games_played=[]
+number_of_games_per_loop=10
+
+agent1=perfect_agent
+agent2=skittles_agent
+skittles_agent.S=Table()
+
+games_so_far=0
+for i in tqdm(range(100),total=100):
+    g=Game(number_of_games=number_of_games_per_loop)
+    g.display=False
+    result=g.run(agent1,agent2)
+
+    games_so_far+=number_of_games_per_loop
+
+    number_of_games_played.append(games_so_far)
+    player_one_win_percentage.append(result.count(1)/number_of_games_per_loop)    
+    player_two_win_percentage.append(result.count(2)/number_of_games_per_loop)    
+    tie_percentage.append(result.count(0)/number_of_games_per_loop)    
+
+SaveTable(skittles_agent.S,'nim skittles.json')
+
+
+# In[29]:
+
+
+get_ipython().run_line_magic('matplotlib', 'inline')
+from pylab import plot
+
+
+# In[31]:
+
+
+plot(number_of_games_played,player_one_win_percentage,'-o')
 
 
 # In[ ]:
