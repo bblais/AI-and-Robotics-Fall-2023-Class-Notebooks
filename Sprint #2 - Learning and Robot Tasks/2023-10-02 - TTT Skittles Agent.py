@@ -1,8 +1,16 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from Game import *
 from Game.minimax import *
 
 
+# ## TTT
 
+# In[2]:
 
 
 def initial_state(): 
@@ -71,8 +79,9 @@ def win_status(state,player):
 
 
 
+# ## Agents
 
-
+# In[3]:
 
 
 def random_move(state,player):    
@@ -95,6 +104,8 @@ def human_move(state,player):
     return move
 human_agent=Agent(human_move)
 
+
+# In[4]:
 
 
 def skittles_move(state,player,info):
@@ -125,6 +136,8 @@ def skittles_move(state,player,info):
     return move
 
 
+# In[5]:
+
 
 def skittles_after(status,player,info):
     S=info.S
@@ -141,9 +154,15 @@ def skittles_after(status,player,info):
     
 
 
+# In[6]:
+
+
 skittles_agent=Agent(skittles_move)
 skittles_agent.S=Table()
 skittles_agent.post=skittles_after
+
+
+# In[17]:
 
 
 def minimax_move(state,player):
@@ -154,18 +173,29 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
+# In[18]:
+
+
 g=Game(number_of_games=1)
 g.run(minimax_agent,skittles_agent)
 g.report()   
 
 
+# In[14]:
+
+
 skittles_agent.S
+
+
+# In[15]:
 
 
 SaveTable(skittles_agent.S,"TTT Skittles.json")
 
 
+# ## Run for more times
 
+# In[20]:
 
 
 g=Game(number_of_games=100)
@@ -174,10 +204,16 @@ g.run(minimax_agent,skittles_agent)
 g.report()   
 
 
+# In[21]:
+
+
 g=Game(number_of_games=1000)
 g.display=False
 g.run(minimax_agent,skittles_agent)
 g.report()   
+
+
+# In[22]:
 
 
 g=Game(number_of_games=10000)
@@ -186,7 +222,14 @@ g.run(minimax_agent,skittles_agent)
 g.report()   
 
 
+# In[23]:
+
+
 SaveTable(skittles_agent.S,"TTT Skittles 10000.json")
+
+
+# In[ ]:
+
 
 
 
