@@ -1,16 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from Game import *
 from Game.minimax import *
 
 
-# ## Nim
 
-# In[2]:
 
 
 def initial_state(): 
@@ -57,9 +49,8 @@ def win_status(state,player):
     
 
 
-# ## Agents
 
-# In[3]:
+
 
 
 def random_move(state,player):    
@@ -84,9 +75,6 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
-# In[4]:
-
-
 def minimax_move(state,player):
     values,moves=minimax_values(state,player,display=False)
     return top_choice(moves,values)
@@ -95,20 +83,14 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
-# In[ ]:
 
-
-
-
-
-# In[10]:
 
 
 def skittles_move(state,player,info):
     S=info.S
     last_state=info.last_state
     last_action=info.last_action
-
+    
     # make/adjust the table
 
     if state not in S:
@@ -146,15 +128,9 @@ def skittles_after(status,player,info):
     
 
 
-# In[11]:
-
-
 skittles_agent=Agent(skittles_move)
 skittles_agent.S=Table()
 skittles_agent.post=skittles_after
-
-
-# In[12]:
 
 
 def perfect_move(state,player):
@@ -168,13 +144,7 @@ def perfect_move(state,player):
 perfect_agent=Agent(perfect_move)
 
 
-# In[ ]:
 
-
-
-
-
-# In[13]:
 
 
 g=Game(number_of_games=100)
@@ -183,14 +153,7 @@ g.run(perfect_agent,skittles_agent)
 g.report()  
 
 
-# In[14]:
-
-
 SaveTable(skittles_agent.S,'nim skittles.json')
-
-
-# In[ ]:
-
 
 
 

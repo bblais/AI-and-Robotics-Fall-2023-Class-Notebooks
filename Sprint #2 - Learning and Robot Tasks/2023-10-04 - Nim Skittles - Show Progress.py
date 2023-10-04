@@ -101,14 +101,14 @@ minimax_agent=Agent(minimax_move)
 
 
 
-# In[10]:
+# In[5]:
 
 
 def skittles_move(state,player,info):
     S=info.S
     last_state=info.last_state
     last_action=info.last_action
-
+    
     # make/adjust the table
 
     if state not in S:
@@ -146,7 +146,7 @@ def skittles_after(status,player,info):
     
 
 
-# In[11]:
+# In[6]:
 
 
 skittles_agent=Agent(skittles_move)
@@ -154,7 +154,7 @@ skittles_agent.S=Table()
 skittles_agent.post=skittles_after
 
 
-# In[12]:
+# In[7]:
 
 
 def perfect_move(state,player):
@@ -174,7 +174,7 @@ perfect_agent=Agent(perfect_move)
 
 
 
-# In[13]:
+# In[12]:
 
 
 g=Game(number_of_games=100)
@@ -183,7 +183,7 @@ g.run(perfect_agent,skittles_agent)
 g.report()  
 
 
-# In[14]:
+# In[9]:
 
 
 SaveTable(skittles_agent.S,'nim skittles.json')
