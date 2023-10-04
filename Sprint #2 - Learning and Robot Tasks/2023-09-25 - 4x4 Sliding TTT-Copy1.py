@@ -1,8 +1,16 @@
+#!/usr/bin/env python
+# coding: utf-8
 
+# ![image.png](attachment:a6dbdc8d-2f36-4dff-b639-08ddf338b2c6.png)
+
+# In[1]:
 
 
 from Game import *
 from Game.minimax import *
+
+
+# In[2]:
 
 
 def initial_state():
@@ -93,6 +101,8 @@ def win_status(state,player):
     
 
 
+# In[9]:
+
 
 def random_move(state,player):    
     moves=valid_moves(state,player)
@@ -117,6 +127,8 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
+# In[15]:
+
 
 def minimax_move(state,player):
 
@@ -127,99 +139,16 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
-def skittles_move(state,player,info):
-    S=info.S
-    last_state=info.last_state
-    last_action=info.last_action
-
-    # make/adjust the table
-
-    if state not in S:
-        # add a row to the table for each move
-        S[state]=Table()
-        moves=valid_moves(state,player)
-        for action in moves:
-            S[state][action]=3  # number of skittles/beads for each move
-    
-    move=weighted_choice(S[state])
-
-    if move is None:  # there are no skittles in this row
-        if last_state:
-            S[last_state][last_action]=S[last_state][last_action]-1
-            if S[last_state][last_action]<0:
-                S[last_state][last_action]=0
-
-        move=random_move(state,player)
-
-    
-    return move
-
-
-
-def skittles_after(status,player,info):
-    S=info.S
-    last_state=info.last_state
-    last_action=info.last_action
-
-    if status=='lose':
-        if last_state:
-            S[last_state][last_action]=S[last_state][last_action]-1
-            if S[last_state][last_action]<0:
-                S[last_state][last_action]=0
-                
-    # does this double-count the learning if you lose on your own turn        
-    
-
-
-skittles_agent1=Agent(skittles_move)
-skittles_agent1.S=Table()
-skittles_agent1.post=skittles_after
-
-skittles_agent2=Agent(skittles_move)
-skittles_agent2.S=Table()
-skittles_agent2.post=skittles_after
-
-
-%matplotlib inline
-from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
-from tqdm import tqdm
-
-
-agent1=skittles_agent1
-agent1.S=Table()
-agent2=skittles_agent2
-agent2.S=Table()
-
-
-S=Storage()
-one,two,ties,N=0,0,0,0
-
-
-for i in tqdm(range(600)):
-    g=Game(number_of_games=100)
-    g.display=False
-    
-    result=g.run(agent1,agent2)
-    one,two,ties,N=one+result.count(1),two+result.count(2),ties+result.count(0),N+len(result)
-    
-    S+=one/N*100,two/N*100,ties/N*100,N
-
-
-y1,y2,y0,x=S.arrays()
-
-
-figure(figsize=(16,8))
-plot(x,y1,label='One Win')
-plot(x,y2,label='Two Win')
-plot(x,y0,label='Tie')
-legend()
-xlabel('Number of Games')
-ylabel('Percent')
-
-
-
+# In[16]:
 
 
 g=Game(number_of_games=1)
+g.run(minimax_agent,random_agent)
+g.report()  
 
-result=g.run(human_agent,skittles_agent2)
+
+# In[ ]:
+
+
+
+

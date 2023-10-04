@@ -1,8 +1,16 @@
+#!/usr/bin/env python
+# coding: utf-8
 
+# ![image.png](attachment:a6dbdc8d-2f36-4dff-b639-08ddf338b2c6.png)
+
+# In[1]:
 
 
 from Game import *
 from Game.minimax import *
+
+
+# In[2]:
 
 
 def initial_state():
@@ -93,6 +101,8 @@ def win_status(state,player):
     
 
 
+# In[3]:
+
 
 def random_move(state,player):    
     moves=valid_moves(state,player)
@@ -117,6 +127,8 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
+# In[4]:
+
 
 def minimax_move(state,player):
 
@@ -125,6 +137,9 @@ def minimax_move(state,player):
 
 
 minimax_agent=Agent(minimax_move)
+
+
+# In[5]:
 
 
 def skittles_move(state,player,info):
@@ -155,6 +170,8 @@ def skittles_move(state,player,info):
     return move
 
 
+# In[6]:
+
 
 def skittles_after(status,player,info):
     S=info.S
@@ -171,6 +188,9 @@ def skittles_after(status,player,info):
     
 
 
+# In[9]:
+
+
 skittles_agent1=Agent(skittles_move)
 skittles_agent1.S=Table()
 skittles_agent1.post=skittles_after
@@ -180,9 +200,15 @@ skittles_agent2.S=Table()
 skittles_agent2.post=skittles_after
 
 
-%matplotlib inline
+# In[13]:
+
+
+get_ipython().run_line_magic('matplotlib', 'inline')
 from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
 from tqdm import tqdm
+
+
+# In[14]:
 
 
 agent1=skittles_agent1
@@ -191,8 +217,14 @@ agent2=skittles_agent2
 agent2.S=Table()
 
 
+# In[15]:
+
+
 S=Storage()
 one,two,ties,N=0,0,0,0
+
+
+# In[16]:
 
 
 for i in tqdm(range(600)):
@@ -205,7 +237,13 @@ for i in tqdm(range(600)):
     S+=one/N*100,two/N*100,ties/N*100,N
 
 
+# In[17]:
+
+
 y1,y2,y0,x=S.arrays()
+
+
+# In[18]:
 
 
 figure(figsize=(16,8))
@@ -217,9 +255,12 @@ xlabel('Number of Games')
 ylabel('Percent')
 
 
+# ## Play a game or two against it to see how good it is
 
+# In[ ]:
 
 
 g=Game(number_of_games=1)
 
 result=g.run(human_agent,skittles_agent2)
+

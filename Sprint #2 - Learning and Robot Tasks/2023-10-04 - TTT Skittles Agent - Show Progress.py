@@ -8,36 +8,42 @@ from Game import *
 from Game.minimax import *
 
 
-# ## Nim
+# ## TTT
 
 # In[2]:
 
 
 def initial_state(): 
     """ returns  - The initial state of the game"""
-    return 21
-
-def valid_moves(state,player):
-    """returns  - a list of the valid moves for the state and player"""
-
-    if state==2:
-        return [1,2]
-    elif state==1:
-        return [1]
-    else:
-        return [1,2,3]
+    state=Board(3,3)
+    return state
 
 def show_state(state):
     """prints or shows the current state"""
-    print("There are",state,"sticks.")
+    state.show_locations()
+    print(state)
 
 def update_state(state,player,move):
     """returns  - the new state after the move for the player"""
 
-    new_state=state-move
+    
+    new_state=state
+    new_state[move]=player
 
     return new_state
 
+def valid_moves(state,player):
+    """returns  - a list of the valid moves for the state and player"""
+
+    moves=[]
+
+
+    for location in range(9):
+        if state[location]==0:
+            moves.append(location)
+
+
+    return moves
 
 def win_status(state,player):
     """    returns  - 'win'  if the state is a winning state for the player, 
@@ -46,15 +52,31 @@ def win_status(state,player):
                None otherwise
     """
 
-    if state==0:
-        return 'lose'
+    # 0  1  2 
+    # 3  4  5 
+    # 6  7  8 
 
-    if state==1:
+    if state[0]==state[1]==state[2]==player:
+        return 'win'
+    if state[3]==state[4]==state[5]==player:
+        return 'win'
+    if state[6]==state[7]==state[8]==player:
+        return 'win'
+    if state[0]==state[3]==state[6]==player:
+        return 'win'
+    if state[1]==state[4]==state[7]==player:
+        return 'win'
+    if state[2]==state[5]==state[8]==player:
+        return 'win'
+    if state[0]==state[4]==state[8]==player:
+        return 'win'
+    if state[6]==state[4]==state[2]==player:
         return 'win'
 
-
-    return None
     
+    if not valid_moves(state,player):
+        return 'stalemate'
+
 
 
 # ## Agents
@@ -80,35 +102,17 @@ def human_move(state,player):
             print("Illegal move.")
 
     return move
-
 human_agent=Agent(human_move)
 
 
 # In[4]:
 
 
-def minimax_move(state,player):
-    values,moves=minimax_values(state,player,display=False)
-    return top_choice(moves,values)
-
-
-minimax_agent=Agent(minimax_move)
-
-
-# In[ ]:
-
-
-
-
-
-# In[5]:
-
-
 def skittles_move(state,player,info):
     S=info.S
     last_state=info.last_state
     last_action=info.last_action
-    
+
     # make/adjust the table
 
     if state not in S:
@@ -130,6 +134,10 @@ def skittles_move(state,player,info):
 
     
     return move
+
+
+# In[5]:
+
 
 def skittles_after(status,player,info):
     S=info.S
@@ -157,15 +165,58 @@ skittles_agent.post=skittles_after
 # In[7]:
 
 
-def perfect_move(state,player):
-    move=(state-1)%4
+def minimax_move(state,player):
+    values,moves=minimax_values(state,player,display=False)
+    return top_choice(moves,values)
 
-    if move==0:  # bad state
-        move=1
 
-    return move
+minimax_agent=Agent(minimax_move)
 
-perfect_agent=Agent(perfect_move)
+
+# In[8]:
+
+
+g=Game(number_of_games=1)
+g.run(minimax_agent,skittles_agent)
+g.report()   
+
+
+# In[9]:
+
+
+skittles_agent.S
+
+
+# In[10]:
+
+
+SaveTable(skittles_agent.S,"TTT Skittles.json")
+
+
+# ## Run for more times
+
+# In[11]:
+
+
+g=Game(number_of_games=100)
+g.display=False
+g.run(minimax_agent,skittles_agent)
+g.report()   
+
+
+# In[12]:
+
+
+g=Game(number_of_games=1000)
+g.display=False
+g.run(minimax_agent,skittles_agent)
+g.report()   
+
+
+# In[13]:
+
+
+SaveTable(skittles_agent.S,"TTT Skittles 10000.json")
 
 
 # In[ ]:
@@ -174,24 +225,9 @@ perfect_agent=Agent(perfect_move)
 
 
 
-# In[8]:
-
-
-g=Game(number_of_games=100)
-g.display=False
-g.run(perfect_agent,skittles_agent)
-g.report()  
-
-
-# In[9]:
-
-
-SaveTable(skittles_agent.S,'nim skittles.json')
-
-
 # ## Progress
 
-# In[10]:
+# In[14]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -199,7 +235,7 @@ from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
 from tqdm import tqdm
 
 
-# In[11]:
+# In[15]:
 
 
 agent1=random_agent
@@ -207,17 +243,17 @@ agent2=skittles_agent
 agent2.S=Table()
 
 
-# In[12]:
+# In[16]:
 
 
 S=Storage()
 one,two,ties,N=0,0,0,0
 
 
-# In[13]:
+# In[17]:
 
 
-for i in tqdm(range(30)):
+for i in tqdm(range(600)):
     g=Game(number_of_games=100)
     g.display=False
     
@@ -227,13 +263,13 @@ for i in tqdm(range(30)):
     S+=one/N*100,two/N*100,ties/N*100,N
 
 
-# In[14]:
+# In[18]:
 
 
 y1,y2,y0,x=S.arrays()
 
 
-# In[15]:
+# In[19]:
 
 
 figure(figsize=(16,8))
