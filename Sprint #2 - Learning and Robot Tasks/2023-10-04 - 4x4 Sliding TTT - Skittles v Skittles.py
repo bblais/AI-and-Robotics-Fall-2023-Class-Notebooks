@@ -188,7 +188,7 @@ def skittles_after(status,player,info):
     
 
 
-# In[9]:
+# In[7]:
 
 
 skittles_agent1=Agent(skittles_move)
@@ -200,7 +200,7 @@ skittles_agent2.S=Table()
 skittles_agent2.post=skittles_after
 
 
-# In[13]:
+# In[8]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -208,7 +208,7 @@ from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
 from tqdm import tqdm
 
 
-# In[14]:
+# In[9]:
 
 
 agent1=skittles_agent1
@@ -217,17 +217,17 @@ agent2=skittles_agent2
 agent2.S=Table()
 
 
-# In[15]:
+# In[10]:
 
 
 S=Storage()
 one,two,ties,N=0,0,0,0
 
 
-# In[16]:
+# In[11]:
 
 
-for i in tqdm(range(600)):
+for i in tqdm(range(4000)):
     g=Game(number_of_games=100)
     g.display=False
     
@@ -237,13 +237,43 @@ for i in tqdm(range(600)):
     S+=one/N*100,two/N*100,ties/N*100,N
 
 
-# In[17]:
+# In[13]:
+
+
+len(skittles_agent1.S)
+
+
+# In[14]:
+
+
+len(skittles_agent2.S)
+
+
+# In[18]:
+
+
+random.choice(skittles_agent2.S.keys())
+
+
+# In[19]:
+
+
+dir(skittles_agent2)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
 
 
 y1,y2,y0,x=S.arrays()
 
 
-# In[18]:
+# In[ ]:
 
 
 figure(figsize=(16,8))

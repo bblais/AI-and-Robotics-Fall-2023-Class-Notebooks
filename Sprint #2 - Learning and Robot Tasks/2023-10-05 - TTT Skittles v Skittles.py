@@ -1,8 +1,17 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from Game import *
 from Game.minimax import *
+from tqdm import tqdm
 
 
+# ## TTT
 
+# In[2]:
 
 
 def initial_state(): 
@@ -71,8 +80,9 @@ def win_status(state,player):
 
 
 
+# ## Agents
 
-
+# In[3]:
 
 
 def random_move(state,player):    
@@ -96,6 +106,8 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
+# In[4]:
+
 
 def skittles_move(state,player,info):
     S=info.S
@@ -109,7 +121,7 @@ def skittles_move(state,player,info):
         S[state]=Table()
         moves=valid_moves(state,player)
         for action in moves:
-            S[state][action]=3  # number of skittles/beads for each move
+            S[state][action]=1  # number of skittles/beads for each move
     
     move=weighted_choice(S[state])
 
@@ -124,6 +136,8 @@ def skittles_move(state,player,info):
     
     return move
 
+
+# In[5]:
 
 
 def skittles_after(status,player,info):
@@ -141,9 +155,19 @@ def skittles_after(status,player,info):
     
 
 
-skittles_agent=Agent(skittles_move)
-skittles_agent.S=Table()
-skittles_agent.post=skittles_after
+# In[6]:
+
+
+skittles_agent1=Agent(skittles_move)
+skittles_agent1.S=Table()
+skittles_agent1.post=skittles_after
+
+skittles_agent2=Agent(skittles_move)
+skittles_agent2.S=Table()
+skittles_agent2.post=skittles_after
+
+
+# In[7]:
 
 
 def minimax_move(state,player):
@@ -154,39 +178,96 @@ def minimax_move(state,player):
 minimax_agent=Agent(minimax_move)
 
 
-g=Game(number_of_games=1)
-g.run(minimax_agent,skittles_agent)
-g.report()   
+# ## Training
+
+# In[8]:
 
 
-skittles_agent.S
+agent1=skittles_agent1
+agent1.S=Table()
+agent2=skittles_agent2
+agent2.S=Table()
 
 
-SaveTable(skittles_agent.S,"TTT Skittles.json")
+# In[9]:
 
 
+S=Storage()
+one,two,ties,N=0,0,0,0
 
 
+# In[10]:
 
-g=Game(number_of_games=100)
-g.display=False
-g.run(minimax_agent,skittles_agent)
-g.report()   
+
+for i in tqdm(range(4000)):
+    g=Game(number_of_games=100)
+    g.display=False
+    
+    result=g.run(agent1,agent2)
+    one,two,ties,N=one+result.count(1),two+result.count(2),ties+result.count(0),N+len(result)
+    
+    S+=one/N*100,two/N*100,ties/N*100,N
+
+
+# ## Progress
+
+# In[17]:
+
+
+y1,y2,y0,x=S.arrays()
+
+
+# In[18]:
+
+
+get_ipython().run_line_magic('matplotlib', 'inline')
+from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
+from tqdm import tqdm
+
+
+# In[19]:
+
+
+figure(figsize=(16,8))
+plot(x,y1,label='One Win')
+plot(x,y2,label='Two Win')
+plot(x,y0,label='Tie')
+legend()
+xlabel('Number of Games')
+ylabel('Percent')
+
+
+# ## Test
+
+# In[20]:
 
 
 g=Game(number_of_games=1000)
 g.display=False
-g.run(minimax_agent,skittles_agent)
-g.report()   
+result=g.run(minimax_agent,skittles_agent2)
+g.report()
 
 
-g=Game(number_of_games=10000)
+# In[21]:
+
+
+g=Game(number_of_games=1000)
 g.display=False
-g.run(minimax_agent,skittles_agent)
-g.report()   
+result=g.run(random_agent,minimax_agent)
+g.report()
 
 
-SaveTable(skittles_agent.S,"TTT Skittles 10000.json")
+# In[22]:
+
+
+g=Game(number_of_games=1000)
+g.display=False
+result=g.run(random_agent,skittles_agent2)
+g.report()
+
+
+# In[ ]:
+
 
 
 
