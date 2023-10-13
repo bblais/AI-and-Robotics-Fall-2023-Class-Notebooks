@@ -327,7 +327,7 @@ for i in tqdm(range(200)):
     result=g.run(agent1,agent2)
     one,two,ties,N=one+result.count(1),two+result.count(2),ties+result.count(0),N+len(result)
     
-    S+=one/N*100,two/N*100,ties/N*100,(i+1)*N_train
+    S+=one/N*100,two/N*100,ties/N*100,N
 
 
 # ## Progress
