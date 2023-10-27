@@ -54,7 +54,7 @@ def forward_until_not_color(color_name):
                     white=[256,256,256],
                     black=[0,0,0],
                     )
-        if color!='color_name':
+        if color!=color_name:
             break
         Wait(0.05)
 
