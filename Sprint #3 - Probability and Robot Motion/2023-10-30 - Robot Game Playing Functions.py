@@ -1,7 +1,30 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from Game import *
 
 
+# ## Functions needed for the final demo of the semester
+# 
+# - state=read_state()
+# - move=get_move(state,player)
+# - make_move(move)      
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
 
+# In[2]:
 
 
 def Q_move(state,player,info):
@@ -43,10 +66,19 @@ def Q_move(state,player,info):
     return move
 
 
+# In[ ]:
 
 
 
 
+
+# In[ ]:
+
+
+
+
+
+# In[21]:
 
 
 def get_move(state,player):
@@ -55,17 +87,48 @@ def get_move(state,player):
     else:
         Q=LoadTable('TTT Q2 Table.json')
 
-
-    move=top_choice(Q[state])
+    if state not in Q:
+        print("State is not in the Q table.",state)
+        move=random_move(state,player)
+    else:
+        move=top_choice(Q[state])
+        
     return move
 
 
+# In[ ]:
 
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[9]:
 
 
 filename='board.txt'
 text=open(filename).read()
 text
+
+
+# In[12]:
 
 
 filename='board.txt'
@@ -79,6 +142,9 @@ print(f"{R}x{C} board")
 state=Board(R,C)
 state.board=[int(val) for val in text.split()]
 state
+
+
+# In[16]:
 
 
 def read_state_from_file(filename):
@@ -95,14 +161,26 @@ def read_state_from_file(filename):
     return state
 
 
+# In[20]:
+
 
 read_state_from_file('board.txt')
+
+
+# In[22]:
 
 
 state=read_state_from_file('board.txt')
 
 
+# In[23]:
+
+
 get_move(state,1)
+
+
+# In[ ]:
+
 
 
 

@@ -309,7 +309,7 @@ N_test=100
 N_train=100
 
 
-# In[15]:
+# In[19]:
 
 
 for i in tqdm(range(200)):
@@ -332,13 +332,13 @@ for i in tqdm(range(200)):
 
 # ## Progress
 
-# In[16]:
+# In[20]:
 
 
 y1,y2,y0,x=S.arrays()
 
 
-# In[17]:
+# In[21]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -346,7 +346,7 @@ from matplotlib.pyplot import figure,plot,grid,legend,xlabel,ylabel,title
 from tqdm import tqdm
 
 
-# In[18]:
+# In[22]:
 
 
 figure(figsize=(16,8))
@@ -356,6 +356,13 @@ plot(x,y0,label='Tie')
 legend()
 xlabel('Number of Games')
 ylabel('Percent')
+
+
+# In[23]:
+
+
+SaveTable(Q1_agent.Q,'TTT Q1 Table.json')
+SaveTable(Q2_agent.Q,'TTT Q2 Table.json')
 
 
 # ## Test
