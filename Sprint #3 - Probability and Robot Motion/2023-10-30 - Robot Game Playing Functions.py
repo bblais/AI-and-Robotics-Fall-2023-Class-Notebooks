@@ -78,7 +78,7 @@ def Q_move(state,player,info):
 
 
 
-# In[21]:
+# In[1]:
 
 
 def get_move(state,player):

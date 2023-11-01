@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 def get_color():
     r,g,b,something=color_sensor.value
     color=closest_color(r,g,b,
@@ -7,8 +13,9 @@ def get_color():
                        )
 
 
+# ## scan a little to the left and right and decide where the green is
 
-
+# In[ ]:
 
 
 # left turn
@@ -34,6 +41,8 @@ if color_left=="green":
     
 
 
+
+# In[ ]:
 
 
 def scan_for_color(target_color):
@@ -64,6 +73,9 @@ def scan_for_color(target_color):
     
 
 
+# In[ ]:
+
+
 def scan_for_color(target_color):
     # left turn
     left.power=-20
@@ -82,7 +94,9 @@ def scan_for_color(target_color):
  
 
 
+# ## always turn left until green
 
+# In[ ]:
 
 
 left.power=-20
@@ -94,6 +108,8 @@ while True:
 left.power=0
 right.power=0
 
+
+# In[ ]:
 
 
 def turn_left_until_color(target_color):
@@ -108,4 +124,8 @@ def turn_left_until_color(target_color):
         
 
 
+# In[ ]:
+
+
 turn_left_until_color("green")
+
