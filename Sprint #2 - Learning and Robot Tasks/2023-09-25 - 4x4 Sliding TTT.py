@@ -10,7 +10,7 @@ from Game import *
 from Game.minimax import *
 
 
-# In[2]:
+# In[5]:
 
 
 def initial_state():
@@ -101,7 +101,7 @@ def win_status(state,player):
     
 
 
-# In[9]:
+# In[6]:
 
 
 def random_move(state,player):    
@@ -127,7 +127,27 @@ def human_move(state,player):
 human_agent=Agent(human_move)
 
 
+# In[8]:
+
+
+state=initial_state()
+state
+
+
 # In[15]:
+
+
+start,end=random_move(state,2)
+start,end
+
+
+# In[16]:
+
+
+state.rc_from_index(start)
+
+
+# In[4]:
 
 
 def minimax_move(state,player):
