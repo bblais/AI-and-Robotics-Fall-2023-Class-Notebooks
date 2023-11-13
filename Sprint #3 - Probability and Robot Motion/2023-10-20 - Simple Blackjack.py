@@ -152,6 +152,20 @@ def state_to_observation(state,player):
     return observation  # what an agent actually sees
 
 
+# In[ ]:
+
+
+def nonrandom_update_state(state,player,move):
+    # same as previous
+    pass
+
+def update_state(state,player,move):
+    if rand()<0.8:
+        nonrandom_update_state(state,player,move)
+    else:
+        
+
+
 # In[9]:
 
 
