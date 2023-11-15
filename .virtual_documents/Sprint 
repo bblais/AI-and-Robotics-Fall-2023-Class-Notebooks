@@ -2,7 +2,132 @@
 from pylab import *
 
 
-im=imread('images/cats.jpg')
+from classy import *
+
+
+data=load_excel('data/iris.xls')
+
+
+data.vectors
+
+
+data.targets
+
+
+data.target_names
+
+
+plot2D(data)
+
+
+subset=extract_features(data,[0,2])
+
+
+plot2D(subset)
+
+
+C=NaiveBayes()
+C.fit(data.vectors,data.targets)
+
+
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+C=NaiveBayes()
+C.fit(subset.vectors,subset.targets)
+print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+
+
+plot2D(subset,C)
+C.plot_centers()
+
+
+C=kNearestNeighbor()
+C.fit(subset.vectors,subset.targets)
+print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+
+
+plot2D(subset,C)
+
+
+C=kNearestNeighbor(k=1)
+C.fit(subset.vectors,subset.targets)
+print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+
+
+plot2D(subset,C)
+
+
+images=image.load_images('images/digits')
+
+
+images=remap_targets(images,new_target_names=['0','1','2','3','4','5','6','7','8','9'])
+
+
+data=image.images_to_vectors(images)
+
+
+C=NaiveBayes()
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+C=kNearestNeighbor(k=1)
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+training_data,testing_data=split(data)
+
+
+C=NaiveBayes()
+C.fit(training_data.vectors,training_data.targets)
+print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
+print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
+
+
+C=kNearestNeighbor()
+C.fit(training_data.vectors,training_data.targets)
+print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
+print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
+
+
+C=kNearestNeighbor(k=1)
+C.fit(training_data.vectors,training_data.targets)
+print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
+print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
+
+
+C=NaiveBayes()
+C.fit(training_data.vectors,training_data.targets)
+print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
+print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
+
+
+C.means.shape
+
+
+imshow(C.means[5,:].reshape(8,8),cmap=cm.gray)
+
+
+images=image.load_images('images/board images/squares')
+
+
+images=remap_targets(images,new_target_names=['blank','red','black'])
+
+
+summary(images)
+
+
+data=image.images_to_vectors(images)
+
+
+45*45*3
+
+
+C=NaiveBayes()
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
 
