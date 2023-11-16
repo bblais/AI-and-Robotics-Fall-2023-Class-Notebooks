@@ -44,37 +44,71 @@ data.target_names
 plot2D(data)
 
 
-# In[10]:
+# In[8]:
 
 
-subset=extract_features(data,[0,2])
+subset=extract_features(data,[0,1])
 
 
-# In[11]:
+# In[9]:
 
 
 plot2D(subset)
 
 
-# In[12]:
+# In[10]:
 
 
 C=NaiveBayes()
 C.fit(data.vectors,data.targets)
 
 
-# In[13]:
+# In[11]:
 
 
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
-# In[14]:
+# In[12]:
+
+
+C.means
+
+
+# In[ ]:
+
+
+
+
+
+# In[13]:
 
 
 C=NaiveBayes()
 C.fit(subset.vectors,subset.targets)
 print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+
+
+# In[14]:
+
+
+C.means
+
+
+# In[15]:
+
+
+new_observation=[4.5,1]
+new_observation=array(new_observation).reshape(1, -1)
+C.predict(new_observation)
+
+
+# In[16]:
+
+
+new_observation=[6,1.6]
+new_observation=array(new_observation).reshape(1, -1)
+C.predict(new_observation)
 
 
 # In[17]:
@@ -110,6 +144,22 @@ print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
 
 
 plot2D(subset,C)
+
+
+# In[22]:
+
+
+C=CSC()
+C.fit(subset.vectors,subset.targets)
+print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+plot2D(subset,C)
+C.plot_centers()
+
+
+# In[24]:
+
+
+len(C.centers)
 
 
 # In[24]:
@@ -200,25 +250,25 @@ C.means.shape
 imshow(C.means[5,:].reshape(8,8),cmap=cm.gray)
 
 
-# In[40]:
+# In[19]:
 
 
 images=image.load_images('images/board images/squares')
 
 
-# In[43]:
+# In[20]:
 
 
 images=remap_targets(images,new_target_names=['blank','red','black'])
 
 
-# In[44]:
+# In[21]:
 
 
 summary(images)
 
 
-# In[45]:
+# In[22]:
 
 
 data=image.images_to_vectors(images)
@@ -230,12 +280,52 @@ data=image.images_to_vectors(images)
 45*45*3
 
 
-# In[47]:
+# In[23]:
 
 
 C=NaiveBayes()
 C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+# In[24]:
+
+
+C.means
+
+
+# In[25]:
+
+
+C.means.shape
+
+
+# In[28]:
+
+
+mean1=C.means[1,:]
+mean1=mean1.reshape((45,45,3))
+mean1=mean1/mean1.max()
+
+
+# In[29]:
+
+
+imshow(mean1)
+
+
+# In[30]:
+
+
+mean1=C.means[2,:]
+mean1=mean1.reshape((45,45,3))
+mean1=mean1/mean1.max()
+
+
+# In[31]:
+
+
+imshow(mean1)
 
 
 # In[ ]:

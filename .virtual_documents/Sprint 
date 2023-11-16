@@ -20,7 +20,7 @@ data.target_names
 plot2D(data)
 
 
-subset=extract_features(data,[0,2])
+subset=extract_features(data,[0,1])
 
 
 plot2D(subset)
@@ -33,9 +33,28 @@ C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
+C.means
+
+
+
+
+
 C=NaiveBayes()
 C.fit(subset.vectors,subset.targets)
 print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+
+
+C.means
+
+
+new_observation=[4.5,1]
+new_observation=array(new_observation).reshape(1, -1)
+C.predict(new_observation)
+
+
+new_observation=[6,1.6]
+new_observation=array(new_observation).reshape(1, -1)
+C.predict(new_observation)
 
 
 plot2D(subset,C)
@@ -56,6 +75,16 @@ print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
 
 
 plot2D(subset,C)
+
+
+C=CSC()
+C.fit(subset.vectors,subset.targets)
+print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
+plot2D(subset,C)
+C.plot_centers()
+
+
+len(C.centers)
 
 
 images=image.load_images('images/digits')
@@ -128,6 +157,28 @@ data=image.images_to_vectors(images)
 C=NaiveBayes()
 C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+C.means
+
+
+C.means.shape
+
+
+mean1=C.means[1,:]
+mean1=mean1.reshape((45,45,3))
+mean1=mean1/mean1.max()
+
+
+imshow(mean1)
+
+
+mean1=C.means[2,:]
+mean1=mean1.reshape((45,45,3))
+mean1=mean1/mean1.max()
+
+
+imshow(mean1)
 
 
 
