@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[12]:
 
 
 get_ipython().run_line_magic('matplotlib', 'qt5')
 
 
-# In[3]:
+# In[13]:
 
 
 from pylab import *
@@ -15,7 +15,7 @@ from pylab import *
 
 # Take a bunch of board pictures from the same location.  This script will help you get the pixel locations of the squares.  Click on the squares in the order of the board -- upper left down to lower right.
 
-# In[4]:
+# In[14]:
 
 
 def onkey(event):
@@ -24,9 +24,12 @@ def onkey(event):
     import os
     import json
     global fig
+    import tempfile
     
     if event.key=='escape':
         print("locations=",array(locations).__repr__())
+        # if os.path.exists('locations.json'):
+        #     os.rename('locations.json','locations_'+tempfile.mktemp(dir='')+".json")
         with open('locations.json', 'w') as outfile:
             json.dump(locations, outfile)
     
@@ -69,7 +72,7 @@ def get_square_locations(filefilter):
     
 
 
-# In[6]:
+# In[15]:
 
 
 get_square_locations("images/board images/test0.jpg")

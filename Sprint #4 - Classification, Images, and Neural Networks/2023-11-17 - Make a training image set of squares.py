@@ -10,14 +10,14 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 from pylab import *
 
 
-# In[5]:
+# In[2]:
 
 
 from glob import glob
 import os
 
 
-# In[10]:
+# In[3]:
 
 
 fnames=glob('images/board images/*.jpg')
@@ -26,7 +26,7 @@ fnames.remove(test_image)  # this will be the image I will reconstruct, so I don
 fnames
 
 
-# In[14]:
+# In[4]:
 
 
 for i,fname in enumerate(fnames):
@@ -48,7 +48,7 @@ title(part + "[TEST]")
 
 # **Step 2:** Now you need the locations of the centers of the squares.  You can do something like 2023-11-13 - Arrays and Images.ipynb, or perhaps easier, run the 2023-11-13 - Get Board Center Square Locations.ipynb on one of the images, select the center squares, and hit the escape key.  It will save the centers to a json file which we load here.
 
-# In[15]:
+# In[5]:
 
 
 import json
@@ -59,7 +59,7 @@ locations
 
 # **Step 3:** Run through all the center locations for each file, extract a square, and save it as another image.  We'll be saving it to a folder I've already made called "images/training squares".
 
-# In[18]:
+# In[6]:
 
 
 square_size=50 # choose a size that works for you

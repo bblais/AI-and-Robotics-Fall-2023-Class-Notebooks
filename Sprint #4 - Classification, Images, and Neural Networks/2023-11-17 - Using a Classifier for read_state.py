@@ -7,7 +7,7 @@
 
 # We'll start by debugging, and making sure it works, before making a complete read_state function
 
-# In[48]:
+# In[14]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -16,7 +16,7 @@ from classy import *
 from Game import Board
 
 
-# In[35]:
+# In[16]:
 
 
 images=image.load_images('images/training squares/')
@@ -24,15 +24,15 @@ images=remap_targets(images,new_target_names=['blank','player1','player2'])
 summary(images)
 
 
-# In[36]:
+# In[17]:
 
 
 data=image.images_to_vectors(images)
 
 
-# This should really be 100% -- if it can't identify the data that it knows about, it will make errors on any test
+# The following should really be 100% -- if it can't identify the data that it knows about, it will make errors on any test
 
-# In[37]:
+# In[23]:
 
 
 C=NaiveBayes()
@@ -40,7 +40,17 @@ C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
-# In[40]:
+# In[24]:
+
+
+C=kNearestNeighbor()
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+# for debugging purposes, look at all of the training images and see how it classifies them.
+
+# In[22]:
 
 
 predictions=C.predict(data.vectors)
@@ -72,7 +82,7 @@ for i in range(L): #range(len(data.vectors)):
 
 # ## Now let's convert an image to a game state
 
-# In[43]:
+# In[25]:
 
 
 fname='images/board images/test9.jpg'
@@ -83,7 +93,7 @@ imshow(im)
 
 # slice into squares
 
-# In[49]:
+# In[26]:
 
 
 square_size=50 # choose a size that works for you
@@ -111,7 +121,7 @@ for r,c in locations:
     count+=1
 
 
-# In[50]:
+# In[27]:
 
 
 state=Board(4,4)
@@ -119,10 +129,19 @@ state.board=values
 state
 
 
+# In[28]:
+
+
+fname='images/board images/test9.jpg'
+im=imread(fname)
+figure(figsize=(4,4))
+imshow(im)
+
+
 # ## Now put it all together into read_state
 #     
 
-# In[51]:
+# In[29]:
 
 
 def read_state_from_file(filename):
@@ -139,14 +158,14 @@ def read_state_from_file(filename):
     return state
 
 
-# In[54]:
+# In[30]:
 
 
 def take_picture(fname):  # in jupyter have this, but don't put this on your robot!
     pass
 
 
-# In[59]:
+# In[31]:
 
 
 def read_state():
@@ -155,7 +174,6 @@ def read_state():
 
     # train the classifier
     images=image.load_images('images/training squares/',delete_alpha=True)  #<=========
-    shape=images.data[0].shape[:2]
     data=image.images_to_vectors(images,verbose=True)  # train on all of them
 
     #classifier=kNearestNeighbor()
@@ -222,7 +240,7 @@ def read_state():
     return state
 
 
-# In[61]:
+# In[33]:
 
 
 state=read_state()
