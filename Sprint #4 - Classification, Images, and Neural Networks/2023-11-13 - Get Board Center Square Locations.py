@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 get_ipython().run_line_magic('matplotlib', 'qt5')
 
 
-# In[2]:
+# In[3]:
 
 
 from pylab import *
@@ -15,7 +15,7 @@ from pylab import *
 
 # Take a bunch of board pictures from the same location.  This script will help you get the pixel locations of the squares.  Click on the squares in the order of the board -- upper left down to lower right.
 
-# In[7]:
+# In[4]:
 
 
 def onkey(event):
@@ -69,10 +69,10 @@ def get_square_locations(filefilter):
     
 
 
-# In[8]:
+# In[6]:
 
 
-get_square_locations("images/connect4.png")
+get_square_locations("images/board images/test0.jpg")
 
 
 # In[ ]:

@@ -1,157 +1,24 @@
+
+
+
+
+
+
 %matplotlib inline
 from pylab import *
-
-
 from classy import *
+from Game import Board
 
 
-data=load_excel('data/iris.xls')
-
-
-data.vectors
-
-
-data.targets
-
-
-data.target_names
-
-
-plot2D(data)
-
-
-subset=extract_features(data,[0,1])
-
-
-plot2D(subset)
-
-
-C=NaiveBayes()
-C.fit(data.vectors,data.targets)
-
-
-print("On the full data set:",C.percent_correct(data.vectors,data.targets))
-
-
-C.means
-
-
-
-
-
-C=NaiveBayes()
-C.fit(subset.vectors,subset.targets)
-print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
-
-
-C.means
-
-
-new_observation=[4.5,1]
-new_observation=array(new_observation).reshape(1, -1)
-C.predict(new_observation)
-
-
-new_observation=[6,1.6]
-new_observation=array(new_observation).reshape(1, -1)
-C.predict(new_observation)
-
-
-plot2D(subset,C)
-C.plot_centers()
-
-
-C=kNearestNeighbor()
-C.fit(subset.vectors,subset.targets)
-print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
-
-
-plot2D(subset,C)
-
-
-C=kNearestNeighbor(k=1)
-C.fit(subset.vectors,subset.targets)
-print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
-
-
-plot2D(subset,C)
-
-
-C=CSC()
-C.fit(subset.vectors,subset.targets)
-print("On the subset data:",C.percent_correct(subset.vectors,subset.targets))
-plot2D(subset,C)
-C.plot_centers()
-
-
-len(C.centers)
-
-
-images=image.load_images('images/digits')
-
-
-images=remap_targets(images,new_target_names=['0','1','2','3','4','5','6','7','8','9'])
-
-
-data=image.images_to_vectors(images)
-
-
-C=NaiveBayes()
-C.fit(data.vectors,data.targets)
-print("On the full data set:",C.percent_correct(data.vectors,data.targets))
-
-
-C=kNearestNeighbor(k=1)
-C.fit(data.vectors,data.targets)
-print("On the full data set:",C.percent_correct(data.vectors,data.targets))
-
-
-training_data,testing_data=split(data)
-
-
-C=NaiveBayes()
-C.fit(training_data.vectors,training_data.targets)
-print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
-print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
-
-
-C=kNearestNeighbor()
-C.fit(training_data.vectors,training_data.targets)
-print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
-print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
-
-
-C=kNearestNeighbor(k=1)
-C.fit(training_data.vectors,training_data.targets)
-print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
-print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
-
-
-C=NaiveBayes()
-C.fit(training_data.vectors,training_data.targets)
-print("On the training data set:",C.percent_correct(training_data.vectors,training_data.targets))
-print("On the test data set:",C.percent_correct(testing_data.vectors,testing_data.targets))
-
-
-C.means.shape
-
-
-imshow(C.means[5,:].reshape(8,8),cmap=cm.gray)
-
-
-images=image.load_images('images/board images/squares')
-
-
-images=remap_targets(images,new_target_names=['blank','red','black'])
-
-
+images=image.load_images('images/training squares/')
+images=remap_targets(images,new_target_names=['blank','player1','player2'])
 summary(images)
 
 
 data=image.images_to_vectors(images)
 
 
-45*45*3
+
 
 
 C=NaiveBayes()
@@ -159,26 +26,170 @@ C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
-C.means
+predictions=C.predict(data.vectors)
+figure(figsize=(30,40))
+names=[data.target_names[p] for p in predictions]
+
+L=len(data.vectors)
+num_rows=int(ceil(sqrt(L)))
+num_cols=L//num_rows+1
+for i in range(L): #range(len(data.vectors)):
+    subplot(num_rows,num_cols,i+1)
+    vector=data.vectors[i,:]
+    im=vector.reshape(images.data[0].shape)
+    im=im/255
+    imshow(im)
+    axis('off')
+    
+    
+    if predictions[i]==data.targets[i]:
+        title(predictions[i],color='green')
+    else:
+        title(predictions[i],color='red')
+        
 
 
-C.means.shape
 
 
-mean1=C.means[1,:]
-mean1=mean1.reshape((45,45,3))
-mean1=mean1/mean1.max()
 
 
-imshow(mean1)
 
 
-mean1=C.means[2,:]
-mean1=mean1.reshape((45,45,3))
-mean1=mean1/mean1.max()
+fname='images/board images/test9.jpg'
+im=imread(fname)
+figure(figsize=(4,4))
+imshow(im)
 
 
-imshow(mean1)
+
+
+
+square_size=50 # choose a size that works for you
+import json
+with open('locations.json') as json_file:
+    locations = json.load(json_file)
+
+count=0
+im=imread(fname)
+
+values=[]
+for r,c in locations:
+    sr=r-square_size//2
+    er=sr+square_size
+    sc=c-square_size//2
+    ec=sc+square_size   
+    subimage=im[sr:er,sc:ec,:]
+
+    # convert the square image to a data vector for the classifier
+    vector=subimage.ravel()
+    prediction=C.predict(atleast_2d(vector))[0]
+
+    values.append(prediction)
+
+    count+=1
+
+
+state=Board(4,4)
+state.board=values
+state
+
+
+
+
+
+def read_state_from_file(filename):
+    text=open(filename).read()
+    text=text.strip()
+    lines=[line.strip() for line in text.split('\n')]  # get rid of \n
+    
+    row=lines[0].split()
+    R,C=len(lines),len(row)
+    print(f"{R}x{C} board")
+    state=Board(R,C)
+    state.board=[int(val) for val in text.split()]  
+    print(state)
+    return state
+
+
+def take_picture(fname):  # in jupyter have this, but don't put this on your robot!
+    pass
+
+
+def read_state():
+    from pylab import imread,imsave
+    import os
+
+    # train the classifier
+    images=image.load_images('images/training squares/',delete_alpha=True)  #<=========
+    shape=images.data[0].shape[:2]
+    data=image.images_to_vectors(images,verbose=True)  # train on all of them
+
+    #classifier=kNearestNeighbor()
+    classifier=NaiveBayes()
+    classifier.fit(data.vectors,data.targets)
+
+
+    # get the picture
+    fname='current_board.jpg'              # for the robot
+    fname='images/board images/test9.jpg'  # for debugging in jupyter
+    take_picture(fname)
+    im=imread(fname)
+
+    # slice the picture into squares of the right size
+    square_size=50 # choose a size that works for you
+    import json
+    with open('locations.json') as json_file:
+        locations = json.load(json_file)
+
+    count=0
+    # for debugging
+    if not os.path.exists('images/predicted'):
+        os.mkdir('images/predicted')
+    
+    values=[]
+    for r,c in locations:
+        sr=r-square_size//2
+        er=sr+square_size
+        sc=c-square_size//2
+        ec=sc+square_size   
+        subimage=im[sr:er,sc:ec,:]
+    
+        # convert the square image to a data vector for the classifier
+        vector=subimage.ravel()
+        prediction=C.predict(atleast_2d(vector))[0]
+    
+        values.append(prediction)
+
+        # for debugging
+        imsave('images/predicted/square %d predicted as %s.jpg' % (count,data.target_names[prediction]),subimage)
+    
+        count+=1
+
+    
+    # reconstruct the state from the predictions
+    state=Board(4,4)                                      #<========= change the size
+    state.board=values
+
+    print("Current state is:")
+    print(state)
+
+    x=input("""
+    Hit return if this is correct, otherwise type a character 
+    and the state will be read from current_board.txt.""")
+
+    if x:
+        print("Reading from file...")
+        state=read_state_from_file('board.txt')
+
+    print("Using")
+    print(state)
+
+    
+    return state
+
+
+
+state=read_state()
 
 
 
