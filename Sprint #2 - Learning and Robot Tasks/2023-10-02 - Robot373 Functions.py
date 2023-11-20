@@ -644,6 +644,78 @@ except KeyboardInterrupt:
 Shutdown()
 
 
+# - forward until you see a color
+
+# In[4]:
+
+
+from Robot373 import *
+left,right=Motors("ab")
+color_sensor=Sensors(None,"color",None,None)  # color on sensor port S2
+
+left.power=50
+right.power=50
+
+while True:
+    r,g,b,_=color_sensor.value
+    print(r,g,b)
+    color=closest_color(r,g,b,
+            white=[256,256,256],
+            black=[0,0,0],
+            )
+    print(color)
+    if color=="black":
+        break
+    Wait(0.05)
+
+Shutdown()
+
+
+# In[ ]:
+
+
+
+
+
+# In[6]:
+
+
+from Robot373 import *
+
+def until_color(target_color,**kwargs):
+    while True:
+        r,g,b,_=color_sensor.value
+        print(r,g,b)
+        color=closest_color(r,g,b,
+                            **kwargs
+                )
+        print(color)
+        if color==target_color:
+            break
+        Wait(0.05)
+
+def forward():
+    left.power=50
+    right.power=50
+
+left,right=Motors("ab")
+color_sensor=Sensors(None,"color",None,None)  # color on sensor port S2
+
+forward()
+until_color("black",
+                white=[256,256,256],
+                black=[0,0,0],)
+
+
+Shutdown()
+
+
+# In[ ]:
+
+
+
+
+
 # - use the touch sensor to do each of the following:
 #     - do something if the sensor is pressed
 #     - do something only if the sensor is pressed and then released

@@ -1,68 +1,52 @@
-%matplotlib qt5
+import paramiko
+import sys
 
 
-from pylab import *
+from getpass import getpass
+passwd = getpass()
 
 
-
-
-
-def onkey(event):
-    global locations
-    from pylab import close
-    import os
-    import json
-    global fig
-    import tempfile
+try:
+    # Note that the parameters below represent a low-level Python Socket, and 
+    # they must be represented as such.
+    tp = paramiko.Transport("10.2.2.38", 22)
     
-    if event.key=='escape':
-        print("locations=",array(locations).__repr__())
-        # if os.path.exists('locations.json'):
-        #     os.rename('locations.json','locations_'+tempfile.mktemp(dir='')+".json")
-        with open('locations.json', 'w') as outfile:
-            json.dump(locations, outfile)
-    
-        close(fig)
-        
-def onclick(event):
-    from pylab import plot,show,close
-    global ix, iy
-    global locations,fig,ax
-    
-    ix, iy = event.xdata, event.ydata
-    global coords
-    coords = [int(ix), int(iy)]
-    print(coords)
-    
-    locations.append([coords[1],coords[0]])  # row,col not x, y
-    
-    ax.plot(ix,iy,'go')
-    fig.canvas.draw()
-    show()
-    return coords
+    # Note that while you *can* connect without checking the hostkey, you really
+    # shouldn't. Without checking the hostkey, a malicious actor can steal
+    # your credentials by impersonating the server.
+    tp.connect (username = "pi", password=passwd)
+    try:
+        sftpClient = paramiko.SFTPClient.from_transport(tp)
+        fileCount = 0
+        # Proof of concept - List First 10 Files
+        for file in sftpClient.listdir():
+            print (str(file))
+            fileCount = 1 + fileCount
+            if 10 == fileCount:
+              break
+        sftpClient.close()
+    except Exception as err:
+        print ("SFTP failed due to [" + str(err) + "]")
+except paramiko.ssh_exception.AuthenticationException as err:
+    print ("Can't connect due to authentication error [" + str(err) + "]")
+except Exception as err:
+    print ("Can't connect due to other error [" + str(err) + "]")
 
-def get_square_locations(filefilter):
-    from pylab import imread,imsave,imshow,figure,show
-    from glob import glob
-    global locations,fig,ax
-    locations=[]
-    stop=False
-    
-    fnames=glob(filefilter)
-    
-    fig=figure()
-    ax=subplot(1,1,1)
-    arr=imread(fnames[0])
-    imshow(arr)
-    
-    cid = fig.canvas.mpl_connect('button_press_event', onclick)
-    cid2 = fig.canvas.mpl_connect('key_press_event', onkey)
-    show()
-    
+tp.close()
 
 
 
-get_square_locations("images/board images/test0.jpg")
+
+
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect("10.2.2.38", username='pi', password=passwd)
+ftp = ssh.open_sftp()
+file=ftp.file('python/bblais_test.txt', "a")
+file.write('This is a test.\n')
+file.flush()
+ftp.close()
+ssh.close()
 
 
 
