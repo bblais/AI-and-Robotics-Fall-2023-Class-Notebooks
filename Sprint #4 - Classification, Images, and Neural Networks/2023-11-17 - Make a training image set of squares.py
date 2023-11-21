@@ -21,8 +21,6 @@ import os
 
 
 fnames=glob('images/board images/*.jpg')
-test_image='images/board images/test9.jpg'
-fnames.remove(test_image)  # this will be the image I will reconstruct, so I don't want it in the training
 fnames
 
 
@@ -38,15 +36,8 @@ for i,fname in enumerate(fnames):
     
     title(part)
 
-subplot(3,4,12)
-fname=test_image
-im=imread(fname)
-imshow(im)
-root,part=os.path.split(fname)
-title(part + "[TEST]")
 
-
-# **Step 2:** Now you need the locations of the centers of the squares.  You can do something like 2023-11-13 - Arrays and Images.ipynb, or perhaps easier, run the 2023-11-13 - Get Board Center Square Locations.ipynb on one of the images, select the center squares, and hit the escape key.  It will save the centers to a json file which we load here.
+# **Step 2:** Now you need the locations of the centers of the squares.  Run the 2023-11-13 - Get Board Center Square Locations.ipynb on one of the images, select the center squares, and hit the escape key.  It will save the centers to a json file which we load here.
 
 # In[5]:
 
@@ -78,7 +69,7 @@ for i,fname in enumerate(fnames):
         subimage=im[sr:er,sc:ec,:]
     
         square_fname='images/training squares/square%d.jpg' % count
-        print(square_fname)
+        print(square_fname,subimage.shape)
         imsave(square_fname,subimage)
         
         count+=1

@@ -1,52 +1,208 @@
-import paramiko
-import sys
 
 
-from getpass import getpass
-passwd = getpass()
 
 
-try:
-    # Note that the parameters below represent a low-level Python Socket, and 
-    # they must be represented as such.
-    tp = paramiko.Transport("10.2.2.38", 22)
+
+
+%matplotlib inline
+from pylab import *
+from classy import *
+from Game import Board
+
+
+images=image.load_images('images/training squares/')
+images=remap_targets(images,new_target_names=['blank','player1','player2'])
+summary(images)
+
+
+data=image.images_to_vectors(images)
+
+
+
+
+
+C=NaiveBayes()
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+C=kNearestNeighbor()
+C.fit(data.vectors,data.targets)
+print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+
+
+
+
+predictions=C.predict(data.vectors)
+figure(figsize=(30,40))
+names=[data.target_names[p] for p in predictions]
+
+L=len(data.vectors)
+num_rows=int(ceil(sqrt(L)))
+num_cols=L//num_rows+1
+for i in range(L): #range(len(data.vectors)):
+    subplot(num_rows,num_cols,i+1)
+    vector=data.vectors[i,:]
+    im=vector.reshape(images.data[0].shape)
+    im=im/255
+    imshow(im)
+    axis('off')
     
-    # Note that while you *can* connect without checking the hostkey, you really
-    # shouldn't. Without checking the hostkey, a malicious actor can steal
-    # your credentials by impersonating the server.
-    tp.connect (username = "pi", password=passwd)
-    try:
-        sftpClient = paramiko.SFTPClient.from_transport(tp)
-        fileCount = 0
-        # Proof of concept - List First 10 Files
-        for file in sftpClient.listdir():
-            print (str(file))
-            fileCount = 1 + fileCount
-            if 10 == fileCount:
-              break
-        sftpClient.close()
-    except Exception as err:
-        print ("SFTP failed due to [" + str(err) + "]")
-except paramiko.ssh_exception.AuthenticationException as err:
-    print ("Can't connect due to authentication error [" + str(err) + "]")
-except Exception as err:
-    print ("Can't connect due to other error [" + str(err) + "]")
-
-tp.close()
+    
+    if predictions[i]==data.targets[i]:
+        title(predictions[i],color='green')
+    else:
+        title(predictions[i],color='red')
+        
 
 
 
 
 
-ssh = paramiko.SSHClient()
-ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect("10.2.2.38", username='pi', password=passwd)
-ftp = ssh.open_sftp()
-file=ftp.file('python/bblais_test.txt', "a")
-file.write('This is a test.\n')
-file.flush()
-ftp.close()
-ssh.close()
+
+
+
+fname='images/board to reconstruct - was test9.jpg'
+im=imread(fname)
+figure(figsize=(4,4))
+imshow(im)
+
+
+
+
+
+square_size=50 # choose a size that works for you
+import json
+with open('locations.json') as json_file:
+    locations = json.load(json_file)
+
+count=0
+im=imread(fname)
+
+values=[]
+for r,c in locations:
+    sr=r-square_size//2
+    er=sr+square_size
+    sc=c-square_size//2
+    ec=sc+square_size   
+    subimage=im[sr:er,sc:ec,:]
+
+    # convert the square image to a data vector for the classifier
+    vector=subimage.ravel()
+    prediction=C.predict(atleast_2d(vector))[0]
+
+    values.append(prediction)
+
+    count+=1
+
+
+state=Board(4,4)
+state.board=values
+state
+
+
+fname='images/board to reconstruct - was test9.jpg'
+im=imread(fname)
+figure(figsize=(4,4))
+imshow(im)
+
+
+
+
+
+def read_state_from_file(filename):
+    text=open(filename).read()
+    text=text.strip()
+    lines=[line.strip() for line in text.split('\n')]  # get rid of \n
+    
+    row=lines[0].split()
+    R,C=len(lines),len(row)
+    print(f"{R}x{C} board")
+    state=Board(R,C)
+    state.board=[int(val) for val in text.split()]  
+    print(state)
+    return state
+
+
+def take_picture(fname):  # in jupyter have this, but don't put this on your robot!
+    pass
+
+
+def read_state():
+    from pylab import imread,imsave
+    import os
+
+    # train the classifier
+    images=image.load_images('images/training squares/',delete_alpha=True)  #<=========
+    data=image.images_to_vectors(images,verbose=True)  # train on all of them
+
+    #classifier=kNearestNeighbor()
+    classifier=NaiveBayes()
+    classifier.fit(data.vectors,data.targets)
+
+
+    # get the picture
+    fname='current_board.jpg'              # for the robot
+    fname='images/board to reconstruct - was test9.jpg' # for debugging in jupyter
+    take_picture(fname)
+    im=imread(fname)
+
+    # slice the picture into squares of the right size
+    square_size=50 # choose a size that works for you
+    import json
+    with open('locations.json') as json_file:
+        locations = json.load(json_file)
+
+    count=0
+    # for debugging
+    if not os.path.exists('images/predicted'):
+        os.mkdir('images/predicted')
+    
+    values=[]
+    for r,c in locations:
+        sr=r-square_size//2
+        er=sr+square_size
+        sc=c-square_size//2
+        ec=sc+square_size   
+        subimage=im[sr:er,sc:ec,:]
+    
+        # convert the square image to a data vector for the classifier
+        vector=subimage.ravel()
+        prediction=C.predict(atleast_2d(vector))[0]
+    
+        values.append(prediction)
+
+        # for debugging
+        imsave('images/predicted/square %d predicted as %s.jpg' % (count,data.target_names[prediction]),subimage)
+    
+        count+=1
+
+    
+    # reconstruct the state from the predictions
+    state=Board(4,4)                                      #<========= change the size
+    state.board=values
+
+    print("Current state is:")
+    print(state)
+
+    x=input("""
+    Hit return if this is correct, otherwise type a character 
+    and the state will be read from current_board.txt.""")
+
+    if x:
+        print("Reading from file...")
+        state=read_state_from_file('board.txt')
+
+    print("Using")
+    print(state)
+
+    
+    return state
+
+
+
+state=read_state()
 
 
 

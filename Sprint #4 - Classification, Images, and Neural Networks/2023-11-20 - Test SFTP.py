@@ -67,6 +67,18 @@ ftp.close()
 ssh.close()
 
 
+# In[10]:
+
+
+get_ipython().run_line_magic('pinfo', 'ftp.put')
+
+
+# In[11]:
+
+
+import classy
+
+
 # In[ ]:
 
 

@@ -7,7 +7,7 @@
 
 # We'll start by debugging, and making sure it works, before making a complete read_state function
 
-# In[14]:
+# In[1]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
@@ -16,7 +16,7 @@ from classy import *
 from Game import Board
 
 
-# In[16]:
+# In[2]:
 
 
 images=image.load_images('images/training squares/')
@@ -24,7 +24,7 @@ images=remap_targets(images,new_target_names=['blank','player1','player2'])
 summary(images)
 
 
-# In[17]:
+# In[3]:
 
 
 data=image.images_to_vectors(images)
@@ -32,7 +32,7 @@ data=image.images_to_vectors(images)
 
 # The following should really be 100% -- if it can't identify the data that it knows about, it will make errors on any test
 
-# In[23]:
+# In[4]:
 
 
 C=NaiveBayes()
@@ -40,7 +40,7 @@ C.fit(data.vectors,data.targets)
 print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
-# In[24]:
+# In[5]:
 
 
 C=kNearestNeighbor()
@@ -50,7 +50,7 @@ print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 # for debugging purposes, look at all of the training images and see how it classifies them.
 
-# In[22]:
+# In[6]:
 
 
 predictions=C.predict(data.vectors)
@@ -82,10 +82,10 @@ for i in range(L): #range(len(data.vectors)):
 
 # ## Now let's convert an image to a game state
 
-# In[25]:
+# In[7]:
 
 
-fname='images/board images/test9.jpg'
+fname='images/board to reconstruct - was test9.jpg'
 im=imread(fname)
 figure(figsize=(4,4))
 imshow(im)
@@ -93,7 +93,7 @@ imshow(im)
 
 # slice into squares
 
-# In[26]:
+# In[8]:
 
 
 square_size=50 # choose a size that works for you
@@ -121,7 +121,7 @@ for r,c in locations:
     count+=1
 
 
-# In[27]:
+# In[9]:
 
 
 state=Board(4,4)
@@ -129,10 +129,10 @@ state.board=values
 state
 
 
-# In[28]:
+# In[10]:
 
 
-fname='images/board images/test9.jpg'
+fname='images/board to reconstruct - was test9.jpg'
 im=imread(fname)
 figure(figsize=(4,4))
 imshow(im)
@@ -141,7 +141,7 @@ imshow(im)
 # ## Now put it all together into read_state
 #     
 
-# In[29]:
+# In[11]:
 
 
 def read_state_from_file(filename):
@@ -158,14 +158,14 @@ def read_state_from_file(filename):
     return state
 
 
-# In[30]:
+# In[12]:
 
 
 def take_picture(fname):  # in jupyter have this, but don't put this on your robot!
     pass
 
 
-# In[31]:
+# In[13]:
 
 
 def read_state():
@@ -183,7 +183,7 @@ def read_state():
 
     # get the picture
     fname='current_board.jpg'              # for the robot
-    fname='images/board images/test9.jpg'  # for debugging in jupyter
+    fname='images/board to reconstruct - was test9.jpg' # for debugging in jupyter
     take_picture(fname)
     im=imread(fname)
 
@@ -240,7 +240,7 @@ def read_state():
     return state
 
 
-# In[33]:
+# In[14]:
 
 
 state=read_state()
