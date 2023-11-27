@@ -1,4 +1,13 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 from Robot373 import *
+
+
+# In[2]:
 
 
 r,g,b,something=[277,366,477,715]
@@ -11,7 +20,13 @@ color=closest_color(r,g,b,
             )
 
 
+# In[3]:
+
+
 color
+
+
+# In[6]:
 
 
 def take_picture(filename='picture.jpg',brightness=100,view=False,S=10):
@@ -20,7 +35,14 @@ def take_picture(filename='picture.jpg',brightness=100,view=False,S=10):
     print(a)
 
 
+# In[7]:
+
+
 take_picture()
+
+
+# In[ ]:
+
 
 
 
