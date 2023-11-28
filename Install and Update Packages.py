@@ -22,7 +22,7 @@ import Game
 # In[ ]:
 
 
-get_ipython().system('pip install "git+https://github.com/bblais/Robot373" --upgrade')
+pip install "git+https://github.com/bblais/Robot373" --upgrade
 
 
 # ## Sprint #3
