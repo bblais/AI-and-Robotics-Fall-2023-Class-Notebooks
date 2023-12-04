@@ -1,7 +1,8 @@
 from Robot373 import *
 
 def take_picture(fname):
-    print(r"""--- Opening /dev/video0...
+    print(r"""(REMOVE THIS FUNCTION FROM my_robot_functions IF YOU'RE ON THE ROBOT
+    --- Opening /dev/video0...
 Trying source module v4l2...
 /dev/video0 opened.
 No input was specified, using the first.
