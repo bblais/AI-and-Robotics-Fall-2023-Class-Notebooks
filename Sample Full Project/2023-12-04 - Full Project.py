@@ -132,6 +132,8 @@ def read_state():
 
     # train the classifier
     images=image.load_images('images/training squares/',delete_alpha=True)  #<=========
+    images=remap_targets(images,new_target_names=['blank','player1','player2'])
+    
     data=image.images_to_vectors(images,verbose=True)  # train on all of them
 
     #classifier=kNearestNeighbor()
