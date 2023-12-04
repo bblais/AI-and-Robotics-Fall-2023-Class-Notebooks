@@ -327,7 +327,9 @@ from Game.numpynet_tables import NumpyNetTable
 # In[18]:
 
 
-def all_possible_moves():
+def all_possible_moves(player):
+
+    # same for both players for tic tac toe
     all_moves=[]
     for move in range(9):
         all_moves.append(move)
@@ -523,7 +525,7 @@ all_moves=all_possible_moves()
 print(state)
 print(initial_X)
 
-QNN1_agent.Q=NumpyNetTable(state_to_X,all_possible_moves(),
+QNN1_agent.Q=NumpyNetTable(state_to_X,all_possible_moves(player=1),
                 {
                     'input':initial_X.shape[1],               # number of inputs
                     'hidden':[(81,'relu'),],
@@ -533,7 +535,7 @@ QNN1_agent.Q=NumpyNetTable(state_to_X,all_possible_moves(),
                 },
                         verbose=False)
 
-QNN2_agent.Q=NumpyNetTable(state_to_X,all_possible_moves(),
+QNN2_agent.Q=NumpyNetTable(state_to_X,all_possible_moves(player=2),
                 {
                     'input':initial_X.shape[1],               # number of inputs
                     'hidden':[(81,'relu'),],
