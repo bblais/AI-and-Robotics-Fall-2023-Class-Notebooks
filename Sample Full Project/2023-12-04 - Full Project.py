@@ -122,11 +122,12 @@ def read_state_from_file(filename):
     return state
 
 
-# In[6]:
+# In[5]:
 
 
 def read_state():
     from pylab import imread,imsave
+    from numpy import atleast_2d
     import os
 
     # train the classifier
@@ -164,7 +165,7 @@ def read_state():
     
         # convert the square image to a data vector for the classifier
         vector=subimage.ravel()
-        prediction=C.predict(atleast_2d(vector))[0]
+        prediction=classifier.predict(atleast_2d(vector))[0]
     
         values.append(prediction)
 
@@ -196,7 +197,7 @@ def read_state():
     return state
 
 
-# In[7]:
+# In[6]:
 
 
 #state=read_state()
@@ -204,7 +205,7 @@ def read_state():
 
 # ## Now the entire project
 
-# In[8]:
+# In[7]:
 
 
 state=read_state()     #  read the state from the world
