@@ -239,6 +239,16 @@ for i in range(5,0,-1):
 take_picture("my cool pic2.jpg")
 
 
+# adjust the brightness
+
+# In[ ]:
+
+
+from Robot373 import *
+
+take_picture("my cool pic.jpg",brightness=50)
+
+
 # ### What if I want to keep changing the filename to not overwrite the file?
 
 # In[ ]:

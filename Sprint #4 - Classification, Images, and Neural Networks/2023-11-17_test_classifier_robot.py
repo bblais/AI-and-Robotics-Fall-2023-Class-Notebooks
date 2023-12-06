@@ -33,57 +33,54 @@ data=image.images_to_vectors(images)
 # In[4]:
 
 
-C=NaiveBayes()
-C.fit(data.vectors,data.targets)
-print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+on_robot=False
 
 
 # In[5]:
 
 
-C.save("naive_bayes_training_squares_trained.json")
-C.save("naive_bayes_training_squares_trained2.json")
+print("training...")
+for C in [NaiveBayes(),kNearestNeighbor()]:
+    print(str(C),": ",end="")
+    C.fit(data.vectors,data.targets)
+    print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+    sfname=str(C).replace("()","")+"_trained.json"
+    C.save(sfname)
+    print(f"Saved {sfname}")
+    if not on_robot:
+        sfname=str(C).replace("()","")+"_trained2.json"
+        C.save(sfname)    
+        print(f"Saved {sfname}")
 
 
 # In[6]:
 
 
-C1=NaiveBayes()
-C1.load("naive_bayes_training_squares_trained.json")
-print("On the full data set:",C1.percent_correct(data.vectors,data.targets))
+print("loading...")
+for C in [NaiveBayes(),kNearestNeighbor()]:
+    print(str(C),": ",end="")
+    sfname=str(C).replace("()","")+"_trained.json"
+    C.load(sfname)
+    print(f"Loaded {sfname}")
+    print("On the full data set:",C.percent_correct(data.vectors,data.targets))
+
+for C in [NaiveBayes(),kNearestNeighbor()]:
+    print(str(C),": ",end="")
+    sfname=str(C).replace("()","")+"_trained2.json"
+    C.load(sfname)
+    print(f"Loaded {sfname}")
+    print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
 # In[7]:
-
-
-C=kNearestNeighbor()
-C.fit(data.vectors,data.targets)
-print("On the full data set:",C.percent_correct(data.vectors,data.targets))
-
-
-# In[8]:
-
-
-C.save("kNearestNeighbor_training_squares_trained.json")
-C.save("kNearestNeighbor_training_squares_trained2.json")
-
-
-# In[9]:
-
-
-C1=kNearestNeighbor()
-C1.load("kNearestNeighbor_training_squares_trained.json")
-print("On the full data set:",C1.percent_correct(data.vectors,data.targets))
-
-
-# In[10]:
 
 
 from pylab import imread
 from numpy import atleast_2d
 
 
-# In[11]:
+# In[8]:
 
 
 fname='images/board to reconstruct - was test9.jpg'
@@ -92,7 +89,7 @@ im=imread(fname)
 
 # slice into squares
 
-# In[12]:
+# In[9]:
 
 
 square_size=50 # choose a size that works for you
@@ -120,7 +117,7 @@ for r,c in locations:
     count+=1
 
 
-# In[13]:
+# In[10]:
 
 
 state=Board(4,4)
@@ -131,7 +128,7 @@ state
 # ## Now put it all together into read_state
 #     
 
-# In[14]:
+# In[11]:
 
 
 def read_state_from_file(filename):
@@ -149,14 +146,14 @@ def read_state_from_file(filename):
     return state
 
 
-# In[15]:
+# In[12]:
 
 
 def take_picture(fname):  # in jupyter have this, but don't put this on your robot!
     pass
 
 
-# In[16]:
+# In[13]:
 
 
 def read_state():
@@ -235,7 +232,7 @@ def read_state():
     return state
 
 
-# In[17]:
+# In[14]:
 
 
 state=read_state()
