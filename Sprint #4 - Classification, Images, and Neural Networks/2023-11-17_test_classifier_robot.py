@@ -33,24 +33,22 @@ data=image.images_to_vectors(images)
 # In[4]:
 
 
-on_robot=False
+import sys
+on_robot=sys.platform=='linux'
 
 
 # In[5]:
 
 
 print("training...")
-for C in [NaiveBayes(),kNearestNeighbor()]:
+for C in [NaiveBayes(),kNearestNeighbor(),CSC(),RCE()]:
     print(str(C),": ",end="")
     C.fit(data.vectors,data.targets)
     print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
-    sfname=str(C).replace("()","")+"_trained.json"
-    C.save(sfname)
-    print(f"Saved {sfname}")
     if not on_robot:
-        sfname=str(C).replace("()","")+"_trained2.json"
-        C.save(sfname)    
+        sfname=str(C).split("(")[0]+"_trained.json"
+        C.save(sfname)
         print(f"Saved {sfname}")
 
 
@@ -58,19 +56,13 @@ for C in [NaiveBayes(),kNearestNeighbor()]:
 
 
 print("loading...")
-for C in [NaiveBayes(),kNearestNeighbor()]:
+for C in [NaiveBayes(),kNearestNeighbor(),CSC(),RCE()]:
     print(str(C),": ",end="")
-    sfname=str(C).replace("()","")+"_trained.json"
+    sfname=str(C).split("(")[0]+"_trained.json"
     C.load(sfname)
     print(f"Loaded {sfname}")
     print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
-for C in [NaiveBayes(),kNearestNeighbor()]:
-    print(str(C),": ",end="")
-    sfname=str(C).replace("()","")+"_trained2.json"
-    C.load(sfname)
-    print(f"Loaded {sfname}")
-    print("On the full data set:",C.percent_correct(data.vectors,data.targets))
 
 
 # In[7]:
@@ -169,7 +161,7 @@ def read_state():
 
     #classifier=kNearestNeighbor()
     classifier=NaiveBayes()
-    classifier.load("naive_bayes_training_squares_trained.json")
+    classifier.load("NaiveBayes_trained.json")
     #classifier.fit(data.vectors,data.targets)
 
 
